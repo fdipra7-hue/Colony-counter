@@ -24,7 +24,6 @@ p_hue = st.sidebar.slider("Purple Hue Range", 0, 180, (136, 175))
 p_val_min = st.sidebar.slider("Purple Brightness Floor", 0, 255, 20)
 
 st.sidebar.header("4. Sensitivity")
-# Updated Min Colony Size to 1
 min_area = st.sidebar.slider("Min Colony Size", 1, 500, 1) 
 max_area = st.sidebar.slider("Max Colony Size", 500, 50000, 8000)
 ws_threshold = st.sidebar.slider("Cluster Separation", 0.05, 0.9, 0.25)
@@ -98,7 +97,8 @@ if uploaded_file is not None:
                     col = (255, 0, 255)
                 
                 (x, y), rad = cv2.minEnclosingCircle(c)
-                cv2.circle(output, (int(x), int(y)), int(rad) + 5, col, 3)
+                # Adjusted circle thickness for better visibility on smaller display
+                cv2.circle(output, (int(x), int(y)), int(rad) + 5, col, 2)
 
     # 6. RESULTS
     st.subheader("Results Dashboard")
@@ -107,4 +107,6 @@ if uploaded_file is not None:
     c2.metric("Purple Colonies", p_count)
     c3.metric("Total Count", b_count + p_count)
 
-    st.image(cv2.cvtColor(output, cv2.COLOR_BGR2RGB), use_container_width=True)
+    # --- UPDATED DISPLAY LOGIC ---
+    # Set width to 800 pixels so it fits on standard screens
+    st.image(cv2.cvtColor(output, cv2.COLOR_BGR2RGB), caption="Analysis Result", width=800)
