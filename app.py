@@ -15,9 +15,8 @@ left_c = st.sidebar.slider("Crop Left %", 0, 50, 5)
 right_c = st.sidebar.slider("Crop Right %", 0, 50, 5)
 
 st.sidebar.header("2. Deep Blue Detection (Black-Blue)")
-# Dropping the Saturation and Value minimums to catch those dark spots
 b_hue = st.sidebar.slider("Blue Hue Range", 0, 180, (75, 135))
-b_val_min = st.sidebar.slider("Blue Brightness Floor (Value)", 0, 255, 10) # Set this low for black-blue
+b_val_min = st.sidebar.slider("Blue Brightness Floor (Value)", 0, 255, 10)
 b_sat_min = st.sidebar.slider("Blue Saturation Floor", 0, 255, 15)
 
 st.sidebar.header("3. Purple Detection")
@@ -26,6 +25,7 @@ p_val_min = st.sidebar.slider("Purple Brightness Floor", 0, 255, 20)
 
 st.sidebar.header("4. Sensitivity")
 min_area = st.sidebar.slider("Min Colony Size", 5, 500, 25)
+max_area = st.sidebar.slider("Max Colony Size", 500, 50000, 8000) # Added Max Area slider
 ws_threshold = st.sidebar.slider("Cluster Separation", 0.05, 0.9, 0.25)
 
 # --- IMAGE UPLOAD ---
@@ -42,23 +42,21 @@ if uploaded_file is not None:
     img = img_raw[y1:y2, x1:x2]
     output = img.copy()
 
-    # 2. ENHANCE (Essential for those dark dots)
+    # 2. ENHANCE
     lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
     l, a, b_chan = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(12,12)) # Stronger CLAHE
+    clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(12,12))
     cl = clahe.apply(l)
     enhanced = cv2.merge((cl, a, b_chan))
     enhanced = cv2.cvtColor(enhanced, cv2.COLOR_LAB2BGR)
 
-    # 3. MASKING (Now with Dark-Spot Support)
+    # 3. MASKING
     hsv = cv2.cvtColor(enhanced, cv2.COLOR_BGR2HSV)
     
-    # Blue mask using the new brightness floor
     lower_b = np.array([b_hue[0], b_sat_min, b_val_min])
     upper_b = np.array([b_hue[1], 255, 255])
     mask_b = cv2.inRange(hsv, lower_b, upper_b)
 
-    # Purple mask
     lower_p = np.array([p_hue[0], 20, p_val_min])
     upper_p = np.array([p_hue[1], 255, 255])
     mask_p = cv2.inRange(hsv, lower_p, upper_p)
@@ -86,7 +84,9 @@ if uploaded_file is not None:
         
         if cnts:
             c = cnts[0]
-            if cv2.contourArea(c) > min_area:
+            area = cv2.contourArea(c)
+            # Apply Min and Max area filters
+            if min_area < area < max_area:
                 b_pix = cv2.countNonZero(cv2.bitwise_and(mask_b, colony_m))
                 p_pix = cv2.countNonZero(cv2.bitwise_and(mask_p, colony_m))
                 
