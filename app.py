@@ -88,4 +88,23 @@ if uploaded_file is not None:
             area = cv2.contourArea(c)
             if min_area <= area < max_area:
                 b_pix = cv2.countNonZero(cv2.bitwise_and(mask_b, colony_m))
-                p_pix =
+                p_pix = cv2.countNonZero(cv2.bitwise_and(mask_p, colony_m))
+                
+                if b_pix > p_pix:
+                    b_count += 1
+                    col = (255, 0, 0) 
+                else:
+                    p_count += 1
+                    col = (255, 0, 255)
+                
+                (x, y), rad = cv2.minEnclosingCircle(c)
+                cv2.circle(output, (int(x), int(y)), int(rad) + 5, col, 3)
+
+    # 6. RESULTS
+    st.subheader("Results Dashboard")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Blue Colonies", b_count)
+    c2.metric("Purple Colonies", p_count)
+    c3.metric("Total Count", b_count + p_count)
+
+    st.image(cv2.cvtColor(output, cv2.COLOR_BGR2RGB), use_container_width=True)
