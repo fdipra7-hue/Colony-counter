@@ -24,8 +24,9 @@ p_hue = st.sidebar.slider("Purple Hue Range", 0, 180, (136, 175))
 p_val_min = st.sidebar.slider("Purple Brightness Floor", 0, 255, 20)
 
 st.sidebar.header("4. Sensitivity")
-min_area = st.sidebar.slider("Min Colony Size", 5, 500, 25)
-max_area = st.sidebar.slider("Max Colony Size", 500, 50000, 8000) # Added Max Area slider
+# Updated Min Colony Size to 2
+min_area = st.sidebar.slider("Min Colony Size", 2, 500, 2) 
+max_area = st.sidebar.slider("Max Colony Size", 500, 50000, 8000)
 ws_threshold = st.sidebar.slider("Cluster Separation", 0.05, 0.9, 0.25)
 
 # --- IMAGE UPLOAD ---
@@ -85,7 +86,6 @@ if uploaded_file is not None:
         if cnts:
             c = cnts[0]
             area = cv2.contourArea(c)
-            # Apply Min and Max area filters
             if min_area < area < max_area:
                 b_pix = cv2.countNonZero(cv2.bitwise_and(mask_b, colony_m))
                 p_pix = cv2.countNonZero(cv2.bitwise_and(mask_p, colony_m))
