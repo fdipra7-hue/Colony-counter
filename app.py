@@ -24,8 +24,8 @@ p_hue = st.sidebar.slider("Purple Hue Range", 0, 180, (136, 175))
 p_val_min = st.sidebar.slider("Purple Brightness Floor", 0, 255, 20)
 
 st.sidebar.header("4. Sensitivity")
-# Updated Min Colony Size to 2
-min_area = st.sidebar.slider("Min Colony Size", 2, 500, 2) 
+# Updated Min Colony Size to 1
+min_area = st.sidebar.slider("Min Colony Size", 1, 500, 1) 
 max_area = st.sidebar.slider("Max Colony Size", 500, 50000, 8000)
 ws_threshold = st.sidebar.slider("Cluster Separation", 0.05, 0.9, 0.25)
 
@@ -86,25 +86,6 @@ if uploaded_file is not None:
         if cnts:
             c = cnts[0]
             area = cv2.contourArea(c)
-            if min_area < area < max_area:
+            if min_area <= area < max_area:
                 b_pix = cv2.countNonZero(cv2.bitwise_and(mask_b, colony_m))
-                p_pix = cv2.countNonZero(cv2.bitwise_and(mask_p, colony_m))
-                
-                if b_pix > p_pix:
-                    b_count += 1
-                    col = (255, 0, 0) 
-                else:
-                    p_count += 1
-                    col = (255, 0, 255)
-                
-                (x, y), rad = cv2.minEnclosingCircle(c)
-                cv2.circle(output, (int(x), int(y)), int(rad) + 5, col, 3)
-
-    # 6. RESULTS
-    st.subheader("Results Dashboard")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Blue Colonies", b_count)
-    c2.metric("Purple Colonies", p_count)
-    c3.metric("Total Count", b_count + p_count)
-
-    st.image(cv2.cvtColor(output, cv2.COLOR_BGR2RGB), use_container_width=True)
+                p_pix =
