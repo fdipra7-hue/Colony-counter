@@ -71,18 +71,18 @@ with st.sidebar.expander("📐 Crop Control", expanded=True):
     right_c = st.slider("Right %", 0, 50, 5)
 
 with st.sidebar.expander("🎨 Color Tuning", expanded=False):
-    b_hue = st.slider("Blue Hue", 0, 180, (75, 135))
-    b_val = st.slider("Blue Brightness Floor", 0, 255, 5)
-    b_sat = st.slider("Blue Saturation Floor", 0, 255, 5)
+    b_hue = st.slider("Blue Hue", 0, 180, (110, 135))
+    b_val = st.slider("Blue Brightness Floor", 0, 255, 0)
+    b_sat = st.slider("Blue Saturation Floor", 0, 255, 150)
     st.markdown("---")
-    p_hue = st.slider("Purple Hue", 0, 180, (136, 175))
-    p_val = st.slider("Purple Brightness Floor", 0, 255, 5)
-    p_sat = st.slider("Purple Saturation Floor", 0, 255, 5)
+    p_hue = st.slider("Purple Hue", 0, 180, (150, 180))
+    p_val = st.slider("Purple Brightness Floor", 0, 255, 35)
+    p_sat = st.slider("Purple Saturation Floor", 0, 255, 25)
 
 with st.sidebar.expander("⚙️ Sensitivity Engine", expanded=True):
     min_area = st.slider("Min Colony Size", 1, 500, 1) 
-    max_area = st.slider("Max Colony Size", 500, 50000, 8000)
-    ws_threshold = st.slider("Watershed Separation", 0.05, 0.9, 0.25)
+    max_area = st.slider("Max Colony Size", 500, 50000, 1000)
+    ws_threshold = st.slider("Watershed Separation", 0.05, 0.9, 0.07)
 
 # --- 3. MAIN INTERFACE ---
 st.write("# 🔬 Fecal Coliform Digital Analyzer")
