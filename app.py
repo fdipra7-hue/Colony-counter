@@ -3,11 +3,11 @@ import cv2
 import numpy as np
 import time
 
-# --- 1. SET THEME & CUSTOM INTERFACE DESIGN ---
+# THEME & CUSTOM INTERFACE DESIGN
 st.set_page_config(page_title="ColiScan Pro Dashboard", page_icon="🔬", layout="wide")
 st.markdown("Developed by: **Farhan** | Civil And Environmental Engineering Dept.-SUST")
 
-# Injecting Custom CSS for the Navy Blue & Glass UI
+# Custom CSS for the Navy Blue & Glass UI
 st.markdown("""
     <style>
     /* Main Background */
@@ -16,21 +16,29 @@ st.markdown("""
         color: white;
     }
     
-    /* Sidebar Styling */
+     /* Sidebar Styling - Deep Frosted Obsidian */
     section[data-testid="stSidebar"] {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        backdrop-filter: blur(12px);
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(0, 210, 255, 0.2);
     }
     
-    /* Metric Card Styling (Glassmorphism) */
+  /* Metric Card Styling - Cyber-Glow Design */
     div[data-testid="stMetric"] {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 20px;
-        backdrop-filter: blur(10px);
-        text-align: center;
+        background: rgba(15, 32, 39, 0.7);
+        border: 1px solid rgba(0, 210, 255, 0.3);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        transition: transform 0.3s ease;
+    }
+
+    /* Subtle Hover Effect for the cards */
+    div[data-testid="stMetric"]:hover {
+        transform: translateY(-5px);
+        border-color: #00d2ff;
+        box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
     }
     
     /* Metric Text Colors */
@@ -60,7 +68,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. SIDEBAR CONTROLS (EXPANDERS) ---
+# 2. SIDEBAR CONTROLS (EXPANDERS) ---
 
 st.sidebar.title("Configuration")
 
@@ -84,7 +92,7 @@ with st.sidebar.expander("⚙️ Sensitivity Engine", expanded=True):
     max_area = st.slider("Max Colony Size", 500, 50000, 1000)
     ws_threshold = st.slider("Watershed Separation", 0.05, 0.9, 0.07)
 
-# --- 3. MAIN INTERFACE ---
+# 3. MAIN INTERFACE ---
 st.write("# 🔬 Fecal Coliform Digital Analyzer")
 st.write("### Environmental Lab Utility")
 
